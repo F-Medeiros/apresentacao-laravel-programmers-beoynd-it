@@ -7,14 +7,25 @@ use Illuminate\Http\Request;
 
 class PostsController extends Controller
 {
+
+    protected $post;
+
+    public function __construct(Post $post)
+    {
+        $this->post = $post;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $posts = $this->post->paginate(15);
+
+        return view('posts.index', compact(['posts']));
     }
 
     /**

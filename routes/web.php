@@ -15,12 +15,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::resources([
+    'posts' => 'PostsController',
+    'comments' => 'CommentsController',
+]);
 
-Route::middleware('auth')->group(function() {
 
-    Route::resources([
-        'posts' => 'PostsController',
-        'comments' => 'CommentsController',
-    ]);
-
-});
+//Route::middleware('auth')->group(function() {
+//
+//    Route::resources([
+//        'posts' => 'PostsController',
+//        'comments' => 'CommentsController',
+//    ]);
+//
+//});
