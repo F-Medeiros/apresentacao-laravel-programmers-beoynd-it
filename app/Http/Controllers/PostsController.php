@@ -54,7 +54,7 @@ class PostsController extends Controller
 
         $post->fill($input);
 
-        $post->user_id = auth()->user->id;
+        $post->user_id = auth()->user()->id;
 
         $post->save();
 

@@ -24,11 +24,12 @@ class CommentsController extends Controller
      */
     public function store(CommentRequest $request)
     {
-
         $comment = $this->comment;
 
         $input = $request->all();
-        $input['user_id'] = auth()->user->id;
+        $input['user_id'] = auth()->user()->id;
+
+
 
         $comment->fill($input)->save();
 
