@@ -11,6 +11,11 @@ class Post extends Model
         'user_id',
     ];
 
+    public function scopeOrderedLasted($query)
+    {
+        return $query->orderBy('id', 'DESC');
+    }
+
 
     public function user()
     {

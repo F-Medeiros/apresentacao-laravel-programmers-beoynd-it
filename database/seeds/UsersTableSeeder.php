@@ -22,7 +22,6 @@ class UsersTableSeeder extends Seeder
             'email' => Str::random(10).'@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
-            'remember_token' => Str::random(10),
         ]);
 
     }

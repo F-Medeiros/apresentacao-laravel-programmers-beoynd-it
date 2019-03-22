@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -21,9 +22,9 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(request $request)
     {
-        $posts = $this->post->paginate(15);
+        $posts = $this->post->orderedLasted()->paginate(15);
 
         return view('posts.index', compact(['posts']));
     }
@@ -35,7 +36,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -44,9 +45,20 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+
+        $input = $request->all();
+
+        $post = $this->post;
+
+        $post->fill($input);
+
+        $post->user_id = auth()->user->id;
+
+        $post->save();
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -57,7 +69,7 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', compact(['post']));
     }
 
     /**
@@ -68,7 +80,7 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', compact(['post']));
     }
 
     /**
@@ -78,9 +90,16 @@ class PostsController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
-        //
+
+        $input = $request->all();
+
+        unset($input['user_id']);
+
+        $post->fill($input)->save();
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -91,6 +110,7 @@ class PostsController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('posts.index');
     }
 }
